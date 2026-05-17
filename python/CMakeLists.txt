@@ -150,6 +150,8 @@ if(ACEtk.python)
 	    string( JOIN "${PATH_DELIM}" tools_PYTHONPATH ${tools_PYTHONPATH_PARTS})
     endif()
 
+    set(tools_python_module "$<TARGET_FILE:njoy::tools.python>")
+
     if( ACEtk.tests )
         include( ${PROJECT_SOURCE_DIR}/cmake/unit_testing_python.cmake )
     endif()
@@ -169,6 +171,7 @@ if(ACEtk.python)
         # If the stubs fail to generate then this command exits gracefully and allows the build to continue.
         add_custom_command(
             TARGET ACEtk.python POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${tools_python_module} ${CMAKE_CURRENT_BINARY_DIR}
             COMMAND ${CMAKE_COMMAND} -E env "PYTHONPATH=${PYTHONPATH_VALUE}" ${pybind11stubgen_exe} ACEtk -o ${CMAKE_CURRENT_SOURCE_DIR}/stubs &> ${CMAKE_CURRENT_BINARY_DIR}/pybind11-stubgen.log || true
             COMMAND ${CMAKE_COMMAND} -E rename ${stubdir}/__init__.pyi ${stubdir}/ACEtk.pyi &> /dev/null || true
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${stubdir}/ ${CMAKE_CURRENT_BINARY_DIR}
@@ -180,6 +183,7 @@ if(ACEtk.python)
         # copy stub files to build tree even if pybind11stubgen isn't available.
         add_custom_command(
             TARGET ACEtk.python POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${tools_python_module} ${CMAKE_CURRENT_BINARY_DIR}
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${stubdir}/ ${CMAKE_CURRENT_BINARY_DIR}
         )
     endif()
