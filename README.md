@@ -30,12 +30,12 @@ The compilation will produce a number of dynamic libraries linked to the python 
 
 ACEtk in python requires python 3.x so you will need to have at least one python 3.x installed. When multiple python versions are installed, it may be beneficial to include ```-DPYTHON_EXECUTABLE=$(which python3)``` in the cmake configuration step so that the default python3 version will be picked.
 
-In order to use the ACEtk python package, the user should make sure that the library is within the python path. This can be done in multiple ways. You can set that up by adding the ACEtk build path to the python path `$PYTHONPATH` environmental variable on your machine, or by using the following in your python code:
+In order to use the ACEtk python package, the user should make sure that the build tree's python output directory is within the python path. This can be done in multiple ways. You can set that up by adding `ACEtk/build/python` to the `$PYTHONPATH` environmental variable on your machine, or by using the following in your python code:
 ```
 import sys
 sys.path.append( < ACEtk-build-path > )
 ```
-where `< ACEtk-build-path >` is the path to the ACEtk python dynamic library.
+where `< ACEtk-build-path >` is the path to the `ACEtk/build/python` directory.
 
 #### Troubleshooting ####
 
